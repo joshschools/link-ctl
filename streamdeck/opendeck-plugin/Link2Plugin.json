@@ -1,0 +1,860 @@
+{
+  "keys": [
+    {
+      "action": {
+        "controllers": [
+          "Keypad",
+          "Encoder"
+        ],
+        "disable_automatic_states": false,
+        "icon": "plugins/com.jschools.insta360link2.sdPlugin/icons/track.png",
+        "name": "Track On",
+        "plugin": "com.jschools.insta360link2.sdPlugin",
+        "property_inspector": null,
+        "supported_in_multi_actions": true,
+        "tooltip": "Track On",
+        "uuid": "com.jschools.insta360link2.trackon",
+        "visible_in_action_list": true,
+        "states": [
+          {
+            "alignment": "middle",
+            "background_colour": "#2563eb",
+            "colour": "#FFFFFF",
+            "family": "Liberation Sans",
+            "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+            "image_scale": 10,
+            "name": "",
+            "show": true,
+            "size": 13,
+            "stroke_colour": "#000000",
+            "stroke_size": 2,
+            "style": "Regular",
+            "text": "Track",
+            "underline": false
+          }
+        ]
+      },
+      "children": null,
+      "context": "Keypad.0.0",
+      "current_state": 0,
+      "settings": {},
+      "states": [
+        {
+          "alignment": "middle",
+          "background_colour": "#2563eb",
+          "colour": "#FFFFFF",
+          "family": "Liberation Sans",
+          "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+          "image_scale": 10,
+          "name": "",
+          "show": true,
+          "size": 13,
+          "stroke_colour": "#000000",
+          "stroke_size": 2,
+          "style": "Regular",
+          "text": "Track",
+          "underline": false
+        }
+      ]
+    },
+    {
+      "action": {
+        "controllers": [
+          "Keypad",
+          "Encoder"
+        ],
+        "disable_automatic_states": false,
+        "icon": "plugins/com.jschools.insta360link2.sdPlugin/icons/track.png",
+        "name": "Track Off",
+        "plugin": "com.jschools.insta360link2.sdPlugin",
+        "property_inspector": null,
+        "supported_in_multi_actions": true,
+        "tooltip": "Track Off",
+        "uuid": "com.jschools.insta360link2.trackoff",
+        "visible_in_action_list": true,
+        "states": [
+          {
+            "alignment": "middle",
+            "background_colour": "#1e40af",
+            "colour": "#FFFFFF",
+            "family": "Liberation Sans",
+            "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+            "image_scale": 10,
+            "name": "",
+            "show": true,
+            "size": 13,
+            "stroke_colour": "#000000",
+            "stroke_size": 2,
+            "style": "Regular",
+            "text": "Track\nOff",
+            "underline": false
+          }
+        ]
+      },
+      "children": null,
+      "context": "Keypad.1.0",
+      "current_state": 0,
+      "settings": {},
+      "states": [
+        {
+          "alignment": "middle",
+          "background_colour": "#1e40af",
+          "colour": "#FFFFFF",
+          "family": "Liberation Sans",
+          "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+          "image_scale": 10,
+          "name": "",
+          "show": true,
+          "size": 13,
+          "stroke_colour": "#000000",
+          "stroke_size": 2,
+          "style": "Regular",
+          "text": "Track\nOff",
+          "underline": false
+        }
+      ]
+    },
+    {
+      "action": {
+        "controllers": [
+          "Keypad",
+          "Encoder"
+        ],
+        "disable_automatic_states": false,
+        "icon": "plugins/com.jschools.insta360link2.sdPlugin/icons/desk.png",
+        "name": "DeskView On",
+        "plugin": "com.jschools.insta360link2.sdPlugin",
+        "property_inspector": null,
+        "supported_in_multi_actions": true,
+        "tooltip": "DeskView On",
+        "uuid": "com.jschools.insta360link2.deskviewon",
+        "visible_in_action_list": true,
+        "states": [
+          {
+            "alignment": "middle",
+            "background_colour": "#7c3aed",
+            "colour": "#FFFFFF",
+            "family": "Liberation Sans",
+            "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+            "image_scale": 10,
+            "name": "",
+            "show": true,
+            "size": 13,
+            "stroke_colour": "#000000",
+            "stroke_size": 2,
+            "style": "Regular",
+            "text": "Desk",
+            "underline": false
+          }
+        ]
+      },
+      "children": null,
+      "context": "Keypad.2.0",
+      "current_state": 0,
+      "settings": {},
+      "states": [
+        {
+          "alignment": "middle",
+          "background_colour": "#7c3aed",
+          "colour": "#FFFFFF",
+          "family": "Liberation Sans",
+          "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+          "image_scale": 10,
+          "name": "",
+          "show": true,
+          "size": 13,
+          "stroke_colour": "#000000",
+          "stroke_size": 2,
+          "style": "Regular",
+          "text": "Desk",
+          "underline": false
+        }
+      ]
+    },
+    {
+      "action": {
+        "controllers": [
+          "Keypad",
+          "Encoder"
+        ],
+        "disable_automatic_states": false,
+        "icon": "plugins/com.jschools.insta360link2.sdPlugin/icons/desk.png",
+        "name": "DeskView Off",
+        "plugin": "com.jschools.insta360link2.sdPlugin",
+        "property_inspector": null,
+        "supported_in_multi_actions": true,
+        "tooltip": "DeskView Off",
+        "uuid": "com.jschools.insta360link2.deskviewoff",
+        "visible_in_action_list": true,
+        "states": [
+          {
+            "alignment": "middle",
+            "background_colour": "#5b21b6",
+            "colour": "#FFFFFF",
+            "family": "Liberation Sans",
+            "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+            "image_scale": 10,
+            "name": "",
+            "show": true,
+            "size": 13,
+            "stroke_colour": "#000000",
+            "stroke_size": 2,
+            "style": "Regular",
+            "text": "Desk\nOff",
+            "underline": false
+          }
+        ]
+      },
+      "children": null,
+      "context": "Keypad.3.0",
+      "current_state": 0,
+      "settings": {},
+      "states": [
+        {
+          "alignment": "middle",
+          "background_colour": "#5b21b6",
+          "colour": "#FFFFFF",
+          "family": "Liberation Sans",
+          "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+          "image_scale": 10,
+          "name": "",
+          "show": true,
+          "size": 13,
+          "stroke_colour": "#000000",
+          "stroke_size": 2,
+          "style": "Regular",
+          "text": "Desk\nOff",
+          "underline": false
+        }
+      ]
+    },
+    {
+      "action": {
+        "controllers": [
+          "Keypad",
+          "Encoder"
+        ],
+        "disable_automatic_states": false,
+        "icon": "plugins/com.jschools.insta360link2.sdPlugin/icons/center.png",
+        "name": "Center",
+        "plugin": "com.jschools.insta360link2.sdPlugin",
+        "property_inspector": null,
+        "supported_in_multi_actions": true,
+        "tooltip": "Center",
+        "uuid": "com.jschools.insta360link2.center",
+        "visible_in_action_list": true,
+        "states": [
+          {
+            "alignment": "middle",
+            "background_colour": "#0d9488",
+            "colour": "#FFFFFF",
+            "family": "Liberation Sans",
+            "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+            "image_scale": 10,
+            "name": "",
+            "show": true,
+            "size": 13,
+            "stroke_colour": "#000000",
+            "stroke_size": 2,
+            "style": "Regular",
+            "text": "Center",
+            "underline": false
+          }
+        ]
+      },
+      "children": null,
+      "context": "Keypad.4.0",
+      "current_state": 0,
+      "settings": {},
+      "states": [
+        {
+          "alignment": "middle",
+          "background_colour": "#0d9488",
+          "colour": "#FFFFFF",
+          "family": "Liberation Sans",
+          "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+          "image_scale": 10,
+          "name": "",
+          "show": true,
+          "size": 13,
+          "stroke_colour": "#000000",
+          "stroke_size": 2,
+          "style": "Regular",
+          "text": "Center",
+          "underline": false
+        }
+      ]
+    },
+    {
+      "action": {
+        "controllers": [
+          "Keypad",
+          "Encoder"
+        ],
+        "disable_automatic_states": false,
+        "icon": "plugins/com.jschools.insta360link2.sdPlugin/icons/desk.png",
+        "name": "Overhead On",
+        "plugin": "com.jschools.insta360link2.sdPlugin",
+        "property_inspector": null,
+        "supported_in_multi_actions": true,
+        "tooltip": "Overhead On",
+        "uuid": "com.jschools.insta360link2.overheadon",
+        "visible_in_action_list": true,
+        "states": [
+          {
+            "alignment": "middle",
+            "background_colour": "#0369a1",
+            "colour": "#FFFFFF",
+            "family": "Liberation Sans",
+            "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+            "image_scale": 10,
+            "name": "",
+            "show": true,
+            "size": 13,
+            "stroke_colour": "#000000",
+            "stroke_size": 2,
+            "style": "Regular",
+            "text": "Overhead",
+            "underline": false
+          }
+        ]
+      },
+      "children": null,
+      "context": "Keypad.5.0",
+      "current_state": 0,
+      "settings": {},
+      "states": [
+        {
+          "alignment": "middle",
+          "background_colour": "#0369a1",
+          "colour": "#FFFFFF",
+          "family": "Liberation Sans",
+          "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+          "image_scale": 10,
+          "name": "",
+          "show": true,
+          "size": 13,
+          "stroke_colour": "#000000",
+          "stroke_size": 2,
+          "style": "Regular",
+          "text": "Overhead",
+          "underline": false
+        }
+      ]
+    },
+    {
+      "action": {
+        "controllers": [
+          "Keypad",
+          "Encoder"
+        ],
+        "disable_automatic_states": false,
+        "icon": "plugins/com.jschools.insta360link2.sdPlugin/icons/desk.png",
+        "name": "Overhead Off",
+        "plugin": "com.jschools.insta360link2.sdPlugin",
+        "property_inspector": null,
+        "supported_in_multi_actions": true,
+        "tooltip": "Overhead Off",
+        "uuid": "com.jschools.insta360link2.overheadoff",
+        "visible_in_action_list": true,
+        "states": [
+          {
+            "alignment": "middle",
+            "background_colour": "#075985",
+            "colour": "#FFFFFF",
+            "family": "Liberation Sans",
+            "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+            "image_scale": 10,
+            "name": "",
+            "show": true,
+            "size": 13,
+            "stroke_colour": "#000000",
+            "stroke_size": 2,
+            "style": "Regular",
+            "text": "Over\nOff",
+            "underline": false
+          }
+        ]
+      },
+      "children": null,
+      "context": "Keypad.6.0",
+      "current_state": 0,
+      "settings": {},
+      "states": [
+        {
+          "alignment": "middle",
+          "background_colour": "#075985",
+          "colour": "#FFFFFF",
+          "family": "Liberation Sans",
+          "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+          "image_scale": 10,
+          "name": "",
+          "show": true,
+          "size": 13,
+          "stroke_colour": "#000000",
+          "stroke_size": 2,
+          "style": "Regular",
+          "text": "Over\nOff",
+          "underline": false
+        }
+      ]
+    },
+    {
+      "action": {
+        "controllers": [
+          "Keypad",
+          "Encoder"
+        ],
+        "disable_automatic_states": false,
+        "icon": "plugins/com.jschools.insta360link2.sdPlugin/icons/desk.png",
+        "name": "Whiteboard On",
+        "plugin": "com.jschools.insta360link2.sdPlugin",
+        "property_inspector": null,
+        "supported_in_multi_actions": true,
+        "tooltip": "Whiteboard On",
+        "uuid": "com.jschools.insta360link2.whiteboardon",
+        "visible_in_action_list": true,
+        "states": [
+          {
+            "alignment": "middle",
+            "background_colour": "#c026d3",
+            "colour": "#FFFFFF",
+            "family": "Liberation Sans",
+            "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+            "image_scale": 10,
+            "name": "",
+            "show": true,
+            "size": 13,
+            "stroke_colour": "#000000",
+            "stroke_size": 2,
+            "style": "Regular",
+            "text": "Board",
+            "underline": false
+          }
+        ]
+      },
+      "children": null,
+      "context": "Keypad.7.0",
+      "current_state": 0,
+      "settings": {},
+      "states": [
+        {
+          "alignment": "middle",
+          "background_colour": "#c026d3",
+          "colour": "#FFFFFF",
+          "family": "Liberation Sans",
+          "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+          "image_scale": 10,
+          "name": "",
+          "show": true,
+          "size": 13,
+          "stroke_colour": "#000000",
+          "stroke_size": 2,
+          "style": "Regular",
+          "text": "Board",
+          "underline": false
+        }
+      ]
+    },
+    {
+      "action": {
+        "controllers": [
+          "Keypad",
+          "Encoder"
+        ],
+        "disable_automatic_states": false,
+        "icon": "plugins/com.jschools.insta360link2.sdPlugin/icons/desk.png",
+        "name": "Whiteboard Off",
+        "plugin": "com.jschools.insta360link2.sdPlugin",
+        "property_inspector": null,
+        "supported_in_multi_actions": true,
+        "tooltip": "Whiteboard Off",
+        "uuid": "com.jschools.insta360link2.whiteboardoff",
+        "visible_in_action_list": true,
+        "states": [
+          {
+            "alignment": "middle",
+            "background_colour": "#a21caf",
+            "colour": "#FFFFFF",
+            "family": "Liberation Sans",
+            "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+            "image_scale": 10,
+            "name": "",
+            "show": true,
+            "size": 13,
+            "stroke_colour": "#000000",
+            "stroke_size": 2,
+            "style": "Regular",
+            "text": "Board\nOff",
+            "underline": false
+          }
+        ]
+      },
+      "children": null,
+      "context": "Keypad.8.0",
+      "current_state": 0,
+      "settings": {},
+      "states": [
+        {
+          "alignment": "middle",
+          "background_colour": "#a21caf",
+          "colour": "#FFFFFF",
+          "family": "Liberation Sans",
+          "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+          "image_scale": 10,
+          "name": "",
+          "show": true,
+          "size": 13,
+          "stroke_colour": "#000000",
+          "stroke_size": 2,
+          "style": "Regular",
+          "text": "Board\nOff",
+          "underline": false
+        }
+      ]
+    },
+    {
+      "action": {
+        "controllers": [
+          "Keypad",
+          "Encoder"
+        ],
+        "disable_automatic_states": false,
+        "icon": "plugins/com.jschools.insta360link2.sdPlugin/icons/mirror.png",
+        "name": "Mirror On",
+        "plugin": "com.jschools.insta360link2.sdPlugin",
+        "property_inspector": null,
+        "supported_in_multi_actions": true,
+        "tooltip": "Mirror On",
+        "uuid": "com.jschools.insta360link2.mirroron",
+        "visible_in_action_list": true,
+        "states": [
+          {
+            "alignment": "middle",
+            "background_colour": "#9333ea",
+            "colour": "#FFFFFF",
+            "family": "Liberation Sans",
+            "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+            "image_scale": 10,
+            "name": "",
+            "show": true,
+            "size": 13,
+            "stroke_colour": "#000000",
+            "stroke_size": 2,
+            "style": "Regular",
+            "text": "Mirror",
+            "underline": false
+          }
+        ]
+      },
+      "children": null,
+      "context": "Keypad.9.0",
+      "current_state": 0,
+      "settings": {},
+      "states": [
+        {
+          "alignment": "middle",
+          "background_colour": "#9333ea",
+          "colour": "#FFFFFF",
+          "family": "Liberation Sans",
+          "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+          "image_scale": 10,
+          "name": "",
+          "show": true,
+          "size": 13,
+          "stroke_colour": "#000000",
+          "stroke_size": 2,
+          "style": "Regular",
+          "text": "Mirror",
+          "underline": false
+        }
+      ]
+    },
+    {
+      "action": {
+        "controllers": [
+          "Keypad",
+          "Encoder"
+        ],
+        "disable_automatic_states": false,
+        "icon": "plugins/com.jschools.insta360link2.sdPlugin/icons/center.png",
+        "name": "Zoom In",
+        "plugin": "com.jschools.insta360link2.sdPlugin",
+        "property_inspector": null,
+        "supported_in_multi_actions": true,
+        "tooltip": "Zoom In",
+        "uuid": "com.jschools.insta360link2.zoomin",
+        "visible_in_action_list": true,
+        "states": [
+          {
+            "alignment": "middle",
+            "background_colour": "#15803d",
+            "colour": "#FFFFFF",
+            "family": "Liberation Sans",
+            "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+            "image_scale": 10,
+            "name": "",
+            "show": true,
+            "size": 13,
+            "stroke_colour": "#000000",
+            "stroke_size": 2,
+            "style": "Regular",
+            "text": "Zoom +",
+            "underline": false
+          }
+        ]
+      },
+      "children": null,
+      "context": "Keypad.10.0",
+      "current_state": 0,
+      "settings": {},
+      "states": [
+        {
+          "alignment": "middle",
+          "background_colour": "#15803d",
+          "colour": "#FFFFFF",
+          "family": "Liberation Sans",
+          "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+          "image_scale": 10,
+          "name": "",
+          "show": true,
+          "size": 13,
+          "stroke_colour": "#000000",
+          "stroke_size": 2,
+          "style": "Regular",
+          "text": "Zoom +",
+          "underline": false
+        }
+      ]
+    },
+    {
+      "action": {
+        "controllers": [
+          "Keypad",
+          "Encoder"
+        ],
+        "disable_automatic_states": false,
+        "icon": "plugins/com.jschools.insta360link2.sdPlugin/icons/center.png",
+        "name": "Zoom Out",
+        "plugin": "com.jschools.insta360link2.sdPlugin",
+        "property_inspector": null,
+        "supported_in_multi_actions": true,
+        "tooltip": "Zoom Out",
+        "uuid": "com.jschools.insta360link2.zoomout",
+        "visible_in_action_list": true,
+        "states": [
+          {
+            "alignment": "middle",
+            "background_colour": "#166534",
+            "colour": "#FFFFFF",
+            "family": "Liberation Sans",
+            "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+            "image_scale": 10,
+            "name": "",
+            "show": true,
+            "size": 13,
+            "stroke_colour": "#000000",
+            "stroke_size": 2,
+            "style": "Regular",
+            "text": "Zoom \u2212",
+            "underline": false
+          }
+        ]
+      },
+      "children": null,
+      "context": "Keypad.11.0",
+      "current_state": 0,
+      "settings": {},
+      "states": [
+        {
+          "alignment": "middle",
+          "background_colour": "#166534",
+          "colour": "#FFFFFF",
+          "family": "Liberation Sans",
+          "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+          "image_scale": 10,
+          "name": "",
+          "show": true,
+          "size": 13,
+          "stroke_colour": "#000000",
+          "stroke_size": 2,
+          "style": "Regular",
+          "text": "Zoom \u2212",
+          "underline": false
+        }
+      ]
+    },
+    {
+      "action": {
+        "controllers": [
+          "Keypad",
+          "Encoder"
+        ],
+        "disable_automatic_states": false,
+        "icon": "plugins/com.jschools.insta360link2.sdPlugin/icons/reset.png",
+        "name": "Reset Camera",
+        "plugin": "com.jschools.insta360link2.sdPlugin",
+        "property_inspector": null,
+        "supported_in_multi_actions": true,
+        "tooltip": "Reset Camera",
+        "uuid": "com.jschools.insta360link2.reset",
+        "visible_in_action_list": true,
+        "states": [
+          {
+            "alignment": "middle",
+            "background_colour": "#c2410c",
+            "colour": "#FFFFFF",
+            "family": "Liberation Sans",
+            "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+            "image_scale": 10,
+            "name": "",
+            "show": true,
+            "size": 13,
+            "stroke_colour": "#000000",
+            "stroke_size": 2,
+            "style": "Regular",
+            "text": "Reset",
+            "underline": false
+          }
+        ]
+      },
+      "children": null,
+      "context": "Keypad.12.0",
+      "current_state": 0,
+      "settings": {},
+      "states": [
+        {
+          "alignment": "middle",
+          "background_colour": "#c2410c",
+          "colour": "#FFFFFF",
+          "family": "Liberation Sans",
+          "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+          "image_scale": 10,
+          "name": "",
+          "show": true,
+          "size": 13,
+          "stroke_colour": "#000000",
+          "stroke_size": 2,
+          "style": "Regular",
+          "text": "Reset",
+          "underline": false
+        }
+      ]
+    },
+    {
+      "action": {
+        "controllers": [
+          "Keypad",
+          "Encoder"
+        ],
+        "disable_automatic_states": false,
+        "icon": "plugins/com.jschools.insta360link2.sdPlugin/icons/reset.png",
+        "name": "Privacy On",
+        "plugin": "com.jschools.insta360link2.sdPlugin",
+        "property_inspector": null,
+        "supported_in_multi_actions": true,
+        "tooltip": "Privacy On",
+        "uuid": "com.jschools.insta360link2.privacyon",
+        "visible_in_action_list": true,
+        "states": [
+          {
+            "alignment": "middle",
+            "background_colour": "#b91c1c",
+            "colour": "#FFFFFF",
+            "family": "Liberation Sans",
+            "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+            "image_scale": 10,
+            "name": "",
+            "show": true,
+            "size": 13,
+            "stroke_colour": "#000000",
+            "stroke_size": 2,
+            "style": "Regular",
+            "text": "Privacy",
+            "underline": false
+          }
+        ]
+      },
+      "children": null,
+      "context": "Keypad.13.0",
+      "current_state": 0,
+      "settings": {},
+      "states": [
+        {
+          "alignment": "middle",
+          "background_colour": "#b91c1c",
+          "colour": "#FFFFFF",
+          "family": "Liberation Sans",
+          "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+          "image_scale": 10,
+          "name": "",
+          "show": true,
+          "size": 13,
+          "stroke_colour": "#000000",
+          "stroke_size": 2,
+          "style": "Regular",
+          "text": "Privacy",
+          "underline": false
+        }
+      ]
+    },
+    {
+      "action": {
+        "controllers": [
+          "Keypad",
+          "Encoder"
+        ],
+        "disable_automatic_states": false,
+        "icon": "plugins/com.jschools.insta360link2.sdPlugin/icons/reset.png",
+        "name": "Privacy Off",
+        "plugin": "com.jschools.insta360link2.sdPlugin",
+        "property_inspector": null,
+        "supported_in_multi_actions": true,
+        "tooltip": "Privacy Off",
+        "uuid": "com.jschools.insta360link2.privacyoff",
+        "visible_in_action_list": true,
+        "states": [
+          {
+            "alignment": "middle",
+            "background_colour": "#991b1b",
+            "colour": "#FFFFFF",
+            "family": "Liberation Sans",
+            "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+            "image_scale": 10,
+            "name": "",
+            "show": true,
+            "size": 13,
+            "stroke_colour": "#000000",
+            "stroke_size": 2,
+            "style": "Regular",
+            "text": "Priv\nOff",
+            "underline": false
+          }
+        ]
+      },
+      "children": null,
+      "context": "Keypad.14.0",
+      "current_state": 0,
+      "settings": {},
+      "states": [
+        {
+          "alignment": "middle",
+          "background_colour": "#991b1b",
+          "colour": "#FFFFFF",
+          "family": "Liberation Sans",
+          "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg==",
+          "image_scale": 10,
+          "name": "",
+          "show": true,
+          "size": 13,
+          "stroke_colour": "#000000",
+          "stroke_size": 2,
+          "style": "Regular",
+          "text": "Priv\nOff",
+          "underline": false
+        }
+      ]
+    }
+  ],
+  "sliders": []
+}

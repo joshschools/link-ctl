@@ -42,3 +42,8 @@ uv.lock
 
 # macOS
 .DS_Store
+
+# OpenDeck plugin (npm install in install.sh)
+streamdeck/opendeck-plugin/**/node_modules/
+streamdeck/opendeck-plugin/**/package-lock.json
+streamdeck/opendeck-plugin/**/link-ctl-path.json

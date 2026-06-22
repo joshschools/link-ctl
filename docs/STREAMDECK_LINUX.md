@@ -76,59 +76,107 @@ Map **Privacy** to `privacy_on.sh` / `privacy_off.sh` (Link 2 only).
 
 ## OpenDeck (recommended on Linux)
 
-[OpenDeck](https://github.com/nekename/OpenDeck) drives Elgato hardware on Linux using
-JSON profiles and the **Starter Pack** plugin's **Run Command** action.
+[OpenDeck](https://github.com/nekename/OpenDeck) drives Elgato hardware on Linux.
+link-ctl supports two integration styles:
 
-### Install profile
+| Approach | Profile | Dependency | Best for |
+|----------|---------|------------|----------|
+| **Native plugin** (recommended) | `Link2Plugin` | Node.js 20+ (`/bin/node`) | Drag actions from sidebar; no Starter Pack |
+| **Starter Pack profile** | `Link2` | Starter Pack plugin | Legacy / no Node.js |
+
+Both call the same `link_ctl.py` USB backend. The native plugin is a small Node.js
+`.sdPlugin` (same format as PipeWire Audio Control) — no Rust compile step.
+
+### Install native plugin + profile
+
+Prerequisites: [OpenDeck](https://github.com/nekename/OpenDeck) 2.5+, Node.js 20+
+at `/usr/bin/node` (OpenDeck looks there; symlink if you use nvm).
 
 With the Stream Deck plugged in and OpenDeck running at least once:
 
 ```bash
 cd ~/Projects/link-ctl
+bash streamdeck/opendeck-plugin/install.sh
+```
+
+This copies `com.jschools.insta360link2.sdPlugin` to
+`~/.config/opendeck/plugins/`, writes `link-ctl-path.json` with your repo path,
+runs `npm install`, installs the **Link2Plugin** profile, and restarts OpenDeck.
+
+Plugin-only (keep your existing layout):
+
+```bash
+bash streamdeck/opendeck-plugin/install.sh --no-profile
+```
+
+Then drag **Insta360 Link 2** actions from the OpenDeck action list onto keys.
+
+### Install Starter Pack profile (legacy)
+
+```bash
 bash streamdeck/opendeck/install.sh
 ```
 
-This writes `Link2.json` into every `~/.config/opendeck/profiles/sd-*/`
-folder, selects it as the active profile, and **restarts OpenDeck** (required —
-OpenDeck only rescans profiles on startup).
+Uses **Run Command** actions → `streamdeck/*.sh`. Requires Starter Pack
+(`com.amansprojects.starterpack.sdPlugin`).
 
-### Select the profile
+### Select a profile
 
-After install, the deck should load **Link2** automatically. To switch back later,
-use the profile dropdown under your device name in the OpenDeck window (below the
-device selector), or:
+After install, the deck should load the new profile automatically. To switch later,
+use the profile dropdown in OpenDeck, or:
 
 ```bash
 opendeck --process-message '{
   "event": "switchProfile",
   "payload": {
     "device": "sd-A00SA5022NHZOS",
-    "profile": "Link2"
+    "profile": "Link2Plugin"
   }
 }'
 ```
 
 Replace `sd-A00SA5022NHZOS` with your device id (`ls ~/.config/opendeck/profiles/`).
+Use `"Link2"` for the Starter Pack profile.
 
 ### Regenerate after moving the repo
 
 ```bash
+bash streamdeck/opendeck-plugin/install.sh
+# or, profile only:
+python3 tools/build_opendeck_plugin_profile.py --install
+# Starter Pack profile:
 python3 tools/build_opendeck_profile.py --install
 ```
 
-Paths in the profile point at absolute script locations under `streamdeck/`; re-run
-`--install` if you move the checkout.
+The plugin stores your checkout path in `link-ctl-path.json` at install time.
+Re-run `install.sh` after moving the repo.
 
 ### OpenDeck 15-key layout
 
 ```
 [ Track    ] [ Track Off] [ Desk     ] [ Desk Off ] [ Center   ]
 [ Overhead ] [ Over Off ] [ Board    ] [ Board Off] [ Mirror   ]
-[ Zoom +   ] [ Zoom −   ] [ Normal   ] [ Privacy  ] [ Priv Off ]
+[ Zoom +   ] [ Zoom −   ] [ Reset    ] [ Privacy  ] [ Priv Off ]
 ```
 
-Requires **Starter Pack** (`com.amansprojects.starterpack.sdPlugin`) enabled in
-OpenDeck — same plugin used by the default volume profile.
+### Plugin development
+
+Source: `streamdeck/opendeck-plugin/com.jschools.insta360link2.sdPlugin/`
+
+- `manifest.json` — action UUIDs (Stream Deck SDK format)
+- `index.js` — WebSocket handler; spawns `link_ctl.py --quiet …` on key press
+- `CodePathLin: index.js` — interpreted Node plugin (no binary build)
+
+OpenDeck plugin protocol matches the Stream Deck SDK: connect to `ws://127.0.0.1:<port>`,
+register with `-registerEvent`, handle `keyDown` events. See the PipeWire Audio plugin
+for a reference implementation on Linux.
+
+Override paths without reinstalling:
+
+```bash
+export LINK_CTL_PY=/path/to/link_ctl.py
+export LINK_CTL_PYTHON=/usr/bin/python3
+```
 
 ## Performance
 
