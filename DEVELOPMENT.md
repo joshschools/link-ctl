@@ -423,10 +423,12 @@ Each has an empirical round-trip test in `tools/xu_verify.py`.
 CT_PANTILT_ABSOLUTE at unit 1 sel 0x0D writes standard UVC `(pan, tilt)` LE.
 `read_pantilt()` and `write_pantilt()` hide this.
 
-**Still TBD** — the `smartcomposition` (AiZoom) master switch is presumed
-to live at bit 0 of the XU1 sel 0x1B bitmask (per SDK `ExtendFunction` enum
-ordering), but empirical verification is inconclusive. The command still
-falls through to the WebSocket path for now.
+**Still TBD** — gesture-to-track / gesture-to-whiteboard (func-enable bits 9–10),
+multi-person head list (`0x14`) / track target (`0x15`), and audio pickup modes
+beyond noise-cancel (`0x07`). Use `tools/probe_hardware_gaps.py` on Link 2.
+
+**Confirmed on Link 2 Linux USB** — `smartcomposition` (AiZoom) master switch at
+func-enable **bit 0** of XU1 sel `0x1B` (2026-06 hardware probe).
 
 ---
 
@@ -467,7 +469,8 @@ physical lens cover, see [API.md — "Privacy" Mode Comparison](API.md#privacy-m
 | `tools/usb_suspend.m` | USB device suspend/resume via IOKit. Powers the camera fully off/on without unplugging. Requires sudo (device-level `USBDeviceSuspend` needs an open device handle). |
 | `tools/xu_capture.py` | Automated XU control discovery. Snapshots XU register state before/after each WebSocket command to identify which registers change. Three phases: capture, replay (verify writes work without the desktop app), and report. |
 | `tools/xu_verify.py` | Phase B verification of XU control read/write. For each confirmed control: reads current value, writes a test value, reads back to verify, and restores the original. Works with the desktop app running. |
-| `tools/validate.py` | Live WebSocket command validator. Sends each known command and asserts the expected device state change via DeviceInfo readback. 17 tests covering all confirmed paramTypes. |
+| `tools/validate.py` | Command validator — WebSocket (17 tests) or `--backend usb` (10/10 on Link 2). |
+| `tools/probe_hardware_gaps.py` | Link 2 Linux hardware gap probes (func-enable bits, head-list, deskview tilt). Gentle, recover between steps. |
 
 ---
 

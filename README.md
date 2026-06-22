@@ -98,15 +98,14 @@ CLI tool to control an **Insta360 Link** (original) webcam.
 
 On **macOS** the tool talks directly to the camera over USB — no app, no WebSocket.
 On **Windows** and as a fallback on macOS, it uses the Insta360 Link Controller
-desktop app's local WebSocket API. On **Linux** PTZ works via `v4l2-ctl`; image/AI
-settings still need the desktop app (which doesn't run on Linux today).
+desktop app's local WebSocket API. On **Linux**, OG Link PTZ works via `v4l2-ctl`;
+**Link 2** (`2e1a:4c04`) supports USB-direct AI modes and image settings without
+the desktop app (see [Linux](#linux)).
 
-> **Newer models:** Compatibility with the
-> [Link 2](https://github.com/csmarshall/link-ctl/issues/5),
-> [Link 2C](https://github.com/csmarshall/link-ctl/issues/6),
-> [Link 2 Pro](https://github.com/csmarshall/link-ctl/issues/7), and
-> [Link 2C Pro](https://github.com/csmarshall/link-ctl/issues/8)
-> is unverified — if you have one, give it a try and report back!
+> **Link 2 on Linux:** USB-direct control is validated on `2e1a:4c04` — see
+> [`docs/LINK2_LINUX.md`](docs/LINK2_LINUX.md). Other models ([2C](https://github.com/csmarshall/link-ctl/issues/6),
+> [2 Pro](https://github.com/csmarshall/link-ctl/issues/7), [2C Pro](https://github.com/csmarshall/link-ctl/issues/8))
+> may differ; report findings.
 
 ---
 
@@ -133,7 +132,7 @@ Legend: ✅ confirmed + validated · ⚠️ confirmed sent, limited/no readback 
 | Normal | `normal` | 5 | — | Clears all AI modes |
 | AI Tracking | `track on\|off\|toggle` | 5 | ✅ track | Smart toggle reads mode field |
 | Overhead | `overhead on\|off\|toggle` | 5 | ✅ overhead | |
-| DeskView | `deskview on\|off\|toggle` | 5 | ✅ deskview | |
+| DeskView | `deskview on\|off\|toggle` | 5 | ✅ deskview | ⚠️ Link 2 (`4c04`): mode SET sticks; gimbal may not tilt (see Linux notes) |
 | Whiteboard | `whiteboard on\|off\|toggle` | 5 | ✅ whiteboard | |
 
 **Image Settings**
@@ -152,7 +151,7 @@ Legend: ✅ confirmed + validated · ⚠️ confirmed sent, limited/no readback 
 | Sharpness | `sharpness 0-100` | 25 | ✅ sharpness | Default 50 |
 | Anti-Flicker | `anti-flicker auto\|50hz\|60hz` | 27 | — | ✅ All three values confirmed |
 | Horizontal Flip | `mirror on\|off\|toggle` | 2 | — | ⚠️ DeviceInfo mirror field does not update; toggle defaults to on |
-| Smart Composition | `smartcomposition on\|off\|toggle` | 11 | — | ✅ Confirmed from capture; requires AI tracking on |
+| Smart Composition | `smartcomposition on\|off\|toggle` | 11 | — | ✅ func-enable bit 0 (Link 2 USB); requires AI tracking on |
 | AI Tracking Speed | `track-speed <0-255>` | 20 (best-guess) | — | ⚠️ USB-direct R/W verified; OG Link behavioral semantics TBD |
 | Noise Cancel | `noise-cancel on\|off\|toggle` | — (no proto entry) | — | ✅ USB-direct R/W verified; macOS only |
 | Manual ISO | `iso <0-65535>` | 23 (best-guess) | — | ✅ USB-direct R/W verified; requires AE off |
@@ -180,19 +179,20 @@ Legend: ✅ confirmed + validated · ⚠️ confirmed sent, limited/no readback 
 
 | Platform | PTZ | AI modes | Image settings | Preflight | Tested |
 |----------|-----|----------|----------------|-----------|--------|
-| macOS | ✓ WebSocket | ✓ | ✓ | ✓ | Yes |
+| macOS | ✓ USB-direct | ✓ USB-direct | ✓ USB-direct | ✓ | Yes |
 | Windows | ✓ WebSocket | ✓ | ✓ | ✓ (tasklist/wmic) | **No — code written, never run on Windows** |
-| Linux | ✓ v4l2-ctl | ✗ (exit 4) | ✗ (exit 4) | ✗ | Partial |
+| Linux (OG Link) | ✓ v4l2-ctl | ✗ (needs Link Controller) | ✗ (needs Link Controller) | ✗ | Partial |
+| Linux (Link 2 `4c04`) | ✓ USB libusb + v4l2 readback | ✓ USB XU (stream-hold) | ✓ USB XU/PU | ✗ | Yes — `validate.py --backend usb` 10/10 |
 
 ### Outstanding work
 
 - [ ] **Windows validation** ([#2](https://github.com/csmarshall/link-ctl/issues/2)) — run `preflight`, `status`, and `validate.py` on a real Windows machine with the camera connected
-- [ ] **Newer camera compatibility** — unverified on [Link 2](https://github.com/csmarshall/link-ctl/issues/5), [Link 2C](https://github.com/csmarshall/link-ctl/issues/6), [Link 2 Pro](https://github.com/csmarshall/link-ctl/issues/7), [Link 2C Pro](https://github.com/csmarshall/link-ctl/issues/8)
+- [ ] **Newer camera compatibility** — Link 2 Linux USB validated on [`feature/linux-usb-link2`](docs/LINK2_LINUX.md); [Link 2C](https://github.com/csmarshall/link-ctl/issues/6), [Link 2 Pro](https://github.com/csmarshall/link-ctl/issues/7), [Link 2C Pro](https://github.com/csmarshall/link-ctl/issues/8) still need hardware passes
 
 ### Resolved
 
 - [x] **Anti-flicker** — paramType=27 confirmed; Auto=`"0"`, 50Hz=`"1"`, 60Hz=`"2"` all eyeball-confirmed.
-- [x] **`smartcomposition` + `smartcomp-frame`** — confirmed from tshark capture. paramType=11 (on/off), paramType=10 (head/halfbody/wholebody). Requires AI tracking to be active.
+- [x] **`smartcomposition` + `smartcomp-frame`** — paramType=11 (on/off) via WS; USB func-enable bit 0 on Link 2. paramType=10 (head/halfbody/wholebody). Requires AI tracking to be active.
 - [x] **`autofocus` paramType** — paramType=18 confirmed from tshark capture. No DeviceInfo readback; explicit on/off required.
 - [x] **Exposure compensation range** — paramType=16 confirmed, value 0–100, validated in `validate.py`.
 - [x] **`preset-save`/`preset`/`preset-delete`** — live tested: save moves camera to position, recall returns to it, delete removes slot from UI. Wire format confirmed from tshark capture — serial is in field 4 (not field 3 as the proto schema suggested).
@@ -208,7 +208,7 @@ Legend: ✅ confirmed + validated · ⚠️ confirmed sent, limited/no readback 
 
 | Requirement | Notes |
 |---|---|
-| macOS or Windows (primary) | Linux supported for PTZ via `v4l2-ctl`; AI/image commands require the desktop app |
+| macOS or Windows (primary) | Linux supported — OG Link: PTZ via `v4l2-ctl`; Link 2 (`4c04`): full USB-direct (see [Linux](#linux)) |
 | Insta360 Link Controller ≥ v2.2.1 | Exposes the WebSocket server used by the mobile remote |
 | Python ≥ 3.11 | |
 | `websockets` ≥ 11 | `pip install websockets` |
@@ -514,7 +514,8 @@ platform and whether `tools/uvc-probe` is available:
 | **macOS** + `tools/uvc-probe` present | USB-direct | USB-direct | USB-direct | — |
 | **macOS** without uvc-probe | WS | WS | WS | Link Controller app must be running |
 | **Windows** | WS | WS | WS | Link Controller app must be running |
-| **Linux** | `v4l2-ctl` | WS (if Link Controller is somehow running) | WS | image/AI only works with the app |
+| **Linux** (OG Link) | `v4l2-ctl` | WS (if app running) | WS | AI/image need Link Controller |
+| **Linux** (Link 2) | USB libusb + v4l2 readback | USB-direct | USB-direct | No desktop app required |
 
 The `uvc-probe` binary is compiled from `tools/uvc-probe.m` (Objective-C /
 IOKit, ~350 lines) and bundled with the Homebrew formula and the release
@@ -657,9 +658,21 @@ python3 tools/validate.py --backend usb
 ```
 
 **Link 2 notes** (`2e1a:4c04`): pan/tilt **readback** uses v4l2 on Linux (XU
-`0x1A` is stale). Stream Deck scripts work USB-direct — see
-[`docs/STREAMDECK_LINUX.md`](docs/STREAMDECK_LINUX.md). Details in
+`0x1A` is stale). AI mode SET requires a **held video stream**; overhead is
+**live-mode-only** (reverts when all streams stop); deskview **persists** but
+**may not tilt the gimbal** on Link 2 — framing can change via digital crop
+while pan/tilt stay at `(0,0)`. The Windows Link Controller app tilts the
+gimbal for DeskView on **Link 2 Pro**; **Link 2C** models use manual mount
+adjustment per Insta360's manual (not gimbal). Stream Deck scripts work
+USB-direct — see [`docs/STREAMDECK_LINUX.md`](docs/STREAMDECK_LINUX.md). Details in
 [`docs/LINK2_LINUX.md`](docs/LINK2_LINUX.md).
+
+Probe unmapped controls gently:
+
+```bash
+python3 tools/probe_hardware_gaps.py --flip --only smartcomposition,head-list
+python3 tools/probe_hardware_gaps.py --deskview-tilt
+```
 
 Override the V4L2 device node:
 

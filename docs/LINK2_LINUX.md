@@ -95,6 +95,16 @@ SET (vrwallace / link-ctl `write_ai_mode`):
 | Overhead | `0x05` | `0x03` | Active readback: `0x05/0x10` (byte[1] is not the flag we send). **Live mode** — holds while a stream is open, reverts to normal once *all* streams stop |
 | DeskView | `0x06` | `0x10` | Active readback: `0x06/0x11` or `0xFF/0x10`; **persists** across stream stop/restart; byte[1] `0x10` cleared on normal |
 
+**DeskView gimbal caveat (Link 2 `4c04`, hardware-verified 2026-06):** XU SET
+succeeds and byte[0] reaches `0x06` while streaming; view/framing may change
+(digital crop). **Pan/tilt readback stays `(0,0)`** — the gimbal does not tilt
+down on the Linux USB path. This differs from the Windows Link Controller app,
+which tilts the gimbal for DeskView on **Link 2 Pro**; **Link 2C / 2C Pro** use
+manual mount adjustment per Insta360's manual (not a software gimbal command).
+A follow-up PTZ SET (`tilt` negative, requires `--detach`) moves the gimbal
+independently but is not issued automatically with deskview mode today.
+Probe: `python3 tools/probe_hardware_gaps.py --deskview-tilt`.
+
 **Link 2 AI-mode SET (hardware-verified, branch `feature/linux-usb-link2`):** the
 AI engine only engages/reports a real byte[0] while streaming. SET requires:
 (1) hold a v4l2 stream open, (2) wait for byte[0] to leave `0xFF` (engine ready —
@@ -104,17 +114,32 @@ Only byte[0] is authoritative; the flag byte we write does not change where it
 lands. Overhead reaches `0x05` and holds while streaming; DeskView reaches `0x06`
 and survives a stream restart.
 
-**DeskView off:** `streamdeck/deskview_off.sh` calls `deskview off`, `normal`, then `center`.
+**DeskView off:** `streamdeck/deskview_off.sh` calls `deskview off`, `normal`, then
+`center` (center recenters gimbal when `--detach` is allowed; deskview on does
+not tilt the gimbal down on Link 2 `4c04`).
 
 **Privacy readback:** use func-enable bit 11 on Link 2; unit 10/0x0F GET can echo `0x03fd` (func-enable) when idle.
+
+### v4l2 / cameractrls fallback
+
+Standard V4L2 controls work for PTZ readback and PU scalars on Link 2. If
+`link-ctl` or `v4l2-ctl` is unavailable, **[cameractrls](https://github.com/soyersoyer/cameractrls)**
+can drive the same `/dev/video*` nodes (brightness, contrast, pan/tilt where the
+driver exposes them). AI modes and func-enable bitmask bits still need XU ioctl
+or `link-ctl` — cameractrls does not replace the 61-byte AI mode buffer at
+XU9/0x02.
 
 ### Open questions
 
 - [x] DeskView on/off — Link 2 RMW tail bytes + explicit normal + center on off
-- [x] Overhead — exit prior mode and disable privacy before SET; RMW not zero-fill
+- [x] DeskView gimbal — mode SET only on `4c04`; no automatic tilt (documented)
+- [x] Overhead — exit prior mode and disable privacy before SET; RMW not zero-fill; **live while streaming**
 - [x] Privacy readback — func-enable bit 11 (unit 10/0x0F GET unreliable)
 - [x] Mirror — func-enable bit 3 SET with verify/retry on Link 2
-- [ ] Smart composition master switch (bit 0 of `0x1B` — unconfirmed)
+- [x] Smart composition master — func-enable **bit 0** (probe + `smartcomposition` USB command)
+- [ ] Multi-person tracking — XU9 sel `0x14`/`0x15` (probe with `tools/probe_hardware_gaps.py`)
+- [ ] Gesture-to-track / gesture-to-whiteboard — func-enable bits 9–10 (unsafe to flip blindly)
+- [ ] Audio pickup modes beyond noise-cancel `0x07`
 - [ ] Full `snapshot` inventory diff vs OG Link
 
 Probe AI modes (camera must be plugged in; ioctl-only, no detach). The
@@ -124,6 +149,7 @@ they revert on stream stop:
 
 ```bash
 python3 tools/validate.py --backend usb --only track,overhead,deskview
+python3 tools/probe_hardware_gaps.py --flip --only smartcomposition,head-list,noise-cancel
 ```
 
 ## Safe testing (avoid camera hangs)

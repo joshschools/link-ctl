@@ -2,7 +2,8 @@
 source "$(dirname "$0")/_common.sh"
 run_link_ctl deskview off
 rc=$?
-# DeskView tilts the gimbal down; ensure normal mode and center pan/tilt/zoom when exiting.
+# DeskView off: recenters gimbal when center uses --detach; deskview on does not
+# tilt the gimbal down on Link 2 (4c04) — only the AI framing mode changes.
 run_link_ctl normal
 sleep 1
 center_args=()

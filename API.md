@@ -393,6 +393,7 @@ Read the current value, flip the desired bit, write it back.
 
 | Bit | Feature | Confirmed |
 |-----|---------|-----------|
+| 0 | Smart composition (AiZoom master) | Yes — Link 2 Linux USB (2026-06) |
 | 2 | HDR | Yes |
 | 3 | Mirror (horizontal flip) | Yes |
 | 4 | Gesture zoom | Yes |
@@ -409,8 +410,8 @@ either silently no-op or stomped by the next firmware status update.
 | 5 | 0x0a | Sensor status | Changes with nearly every operation |
 | 9 | 0x0b | Device status | 5-byte status word |
 | 9 | 0x0f | AF/exposure readback | 12 bytes; changes with zoom, mode, focus. Proto labels this `XU_AF_MODE_OR_DOWNLOAD_FILE` — treat as readback, not a control |
-| 9 | 0x14 | Head list | 240 bytes; populates when AI tracking is on and faces are in frame |
-| 9 | 0x15 | Track target | 8 bytes; current tracking target descriptor |
+| 9 | 0x14 | Head list | 97 bytes on Link 2 (GET_LEN); populates when faces in frame |
+| 9 | 0x15 | Track target | 16 bytes on Link 2; current tracking target descriptor |
 
 > **History:** earlier revisions of this doc listed selector 0x19 here as
 > "ISO/AE readback, not writable." That was wrong — see the AE-gated manual
