@@ -1,31 +1,31 @@
 "use strict";
 
 const WebSocket = require("ws");
-const { spawn } = require("child_process");
+const { spawn, execFile } = require("child_process");
 const fs = require("fs");
 const path = require("path");
 
 const PLUGIN_UUID = "com.jschools.insta360link2";
 const PREFIX = `${PLUGIN_UUID}.`;
 
+/** Toggle actions: short name -> link-ctl status option */
+const TOGGLES = new Set([
+  "track",
+  "deskview",
+  "overhead",
+  "mirror",
+  "whiteboard",
+  "privacy",
+  "hdr",
+]);
+
 /** @type {Record<string, { args?: string[], script?: string }>} */
 const COMMANDS = {
-  trackon: { args: ["track", "on"] },
-  trackoff: { args: ["track", "off"] },
-  deskviewon: { args: ["deskview", "on"] },
-  deskviewoff: { args: ["deskview", "off"] },
-  mirroron: { args: ["mirror", "on"] },
   center: { args: ["center"] },
   normal: { args: ["normal"] },
   reset: { script: "reset.sh" },
   zoomin: { args: ["zoom-rel", "50"] },
   zoomout: { args: ["zoom-rel", "-50"] },
-  overheadon: { args: ["overhead", "on"] },
-  overheadoff: { args: ["overhead", "off"] },
-  whiteboardon: { args: ["whiteboard", "on"] },
-  whiteboardoff: { args: ["whiteboard", "off"] },
-  privacyon: { args: ["privacy", "on"] },
-  privacyoff: { args: ["privacy", "off"] },
 };
 
 const args = {};
@@ -41,6 +41,10 @@ if (!port || !pluginUUID || !registerEvent) {
   console.error("Missing required args: -port -pluginUUID -registerEvent");
   process.exit(1);
 }
+
+/** @type {Map<string, { short: string, context: string }>} */
+const contexts = new Map();
+const lastStateCache = new Map();
 
 /** @returns {{ repoRoot?: string, linkCtlPath?: string, python?: string }} */
 function loadConfig() {
@@ -95,6 +99,33 @@ function actionShort(action) {
   return action.slice(PREFIX.length);
 }
 
+function linkCtlPaths() {
+  const cfg = loadConfig();
+  const linkCtl = resolveLinkCtl(cfg);
+  if (!linkCtl) {
+    return null;
+  }
+  return { cfg, linkCtl, python: resolvePython(cfg) };
+}
+
+function runLinkCtl(cliArgs, callback) {
+  const paths = linkCtlPaths();
+  if (!paths) {
+    console.error("link_ctl.py not found — re-run streamdeck/opendeck-plugin/install.sh");
+    callback(new Error("link_ctl not found"));
+    return;
+  }
+  const env = { ...process.env, LINK_CTL_QUIET: "1" };
+  execFile(
+    paths.python,
+    [paths.linkCtl, "--quiet", ...cliArgs],
+    { env, timeout: 15000, maxBuffer: 4096 },
+    (err, stdout) => {
+      callback(err, stdout ? stdout.trim() : "");
+    }
+  );
+}
+
 function runCommand(short) {
   const spec = COMMANDS[short];
   if (!spec) {
@@ -116,20 +147,59 @@ function runCommand(short) {
     return;
   }
 
-  const linkCtl = resolveLinkCtl(cfg);
-  if (!linkCtl) {
+  const paths = linkCtlPaths();
+  if (!paths) {
     console.error("link_ctl.py not found — re-run streamdeck/opendeck-plugin/install.sh");
     return;
   }
 
-  const python = resolvePython(cfg);
-  spawn(python, [linkCtl, "--quiet", ...spec.args], { stdio: "ignore", env });
+  spawn(paths.python, [paths.linkCtl, "--quiet", ...spec.args], {
+    stdio: "ignore",
+    env,
+  });
 }
 
 function send(obj) {
   if (ws.readyState === WebSocket.OPEN) {
     ws.send(JSON.stringify(obj));
   }
+}
+
+function setState(context, state) {
+  if (lastStateCache.get(context) === state) {
+    return;
+  }
+  lastStateCache.set(context, state);
+  send({
+    event: "setState",
+    context,
+    payload: { state },
+  });
+}
+
+function refreshToggleState(context, option) {
+  runLinkCtl(["status", option, "--json", "-q"], (err, stdout) => {
+    if (err && !stdout) {
+      return;
+    }
+    try {
+      const result = JSON.parse(stdout);
+      if (typeof result.is_on === "boolean") {
+        setState(context, result.is_on ? 1 : 0);
+      }
+    } catch {
+      // Camera unplugged or status unavailable — leave current state.
+    }
+  });
+}
+
+function handleToggle(short, context) {
+  runLinkCtl([short, "toggle"], (err) => {
+    if (err) {
+      console.error(`toggle ${short}: ${err.message}`);
+    }
+    refreshToggleState(context, short);
+  });
 }
 
 const ws = new WebSocket(`ws://127.0.0.1:${port}`);
@@ -148,16 +218,43 @@ ws.on("message", (raw) => {
   }
 
   const { event, action, context } = msg;
-  if (event !== "keyDown" && event !== "dialDown" && event !== "touchTap") {
-    return;
-  }
 
-  const short = actionShort(action);
-  if (!short) {
-    return;
-  }
+  switch (event) {
+    case "willAppear": {
+      const short = actionShort(action);
+      if (!short) {
+        break;
+      }
+      contexts.set(context, { short, context });
+      if (TOGGLES.has(short)) {
+        refreshToggleState(context, short);
+      }
+      break;
+    }
 
-  runCommand(short);
+    case "willDisappear":
+      contexts.delete(context);
+      lastStateCache.delete(context);
+      break;
+
+    case "keyDown":
+    case "dialDown":
+    case "touchTap": {
+      const short = actionShort(action);
+      if (!short) {
+        break;
+      }
+      if (TOGGLES.has(short)) {
+        handleToggle(short, context);
+      } else {
+        runCommand(short);
+      }
+      break;
+    }
+
+    default:
+      break;
+  }
 });
 
 ws.on("close", () => process.exit(0));

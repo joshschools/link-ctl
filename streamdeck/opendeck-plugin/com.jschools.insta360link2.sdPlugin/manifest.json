@@ -2,7 +2,7 @@
   "Name": "Insta360 Link 2",
   "Description": "Control Insta360 Link 2 on Linux via link-ctl (USB). No Windows Insta360 app required.",
   "Author": "jschools",
-  "Version": "0.1.0",
+  "Version": "0.2.0",
   "Icon": "icons/plugin",
   "Category": "Camera",
   "CategoryIcon": "icons/plugin",
@@ -19,49 +19,88 @@
   "SDKVersion": 2,
   "Actions": [
     {
-      "UUID": "com.jschools.insta360link2.trackon",
-      "Name": "Track On",
-      "Icon": "icons/track",
-      "Tooltip": "Enable AI tracking",
+      "UUID": "com.jschools.insta360link2.track",
+      "Name": "AI Tracking",
+      "Icon": "icons/track-on",
+      "Tooltip": "Toggle AI subject tracking",
       "Controllers": ["Keypad", "Encoder"],
       "SupportedInMultiActions": true,
-      "States": [{ "Image": "icons/track", "Name": "Track On" }]
+      "States": [
+        { "Image": "icons/track-off", "Name": "Off" },
+        { "Image": "icons/track-on", "Name": "On" }
+      ]
     },
     {
-      "UUID": "com.jschools.insta360link2.trackoff",
-      "Name": "Track Off",
-      "Icon": "icons/track",
-      "Tooltip": "Disable AI tracking",
+      "UUID": "com.jschools.insta360link2.deskview",
+      "Name": "DeskView",
+      "Icon": "icons/desk-on",
+      "Tooltip": "Toggle DeskView (desk surface)",
       "Controllers": ["Keypad", "Encoder"],
       "SupportedInMultiActions": true,
-      "States": [{ "Image": "icons/track", "Name": "Track Off" }]
+      "States": [
+        { "Image": "icons/desk-off", "Name": "Off" },
+        { "Image": "icons/desk-on", "Name": "On" }
+      ]
     },
     {
-      "UUID": "com.jschools.insta360link2.deskviewon",
-      "Name": "DeskView On",
-      "Icon": "icons/desk",
-      "Tooltip": "Enable DeskView mode",
+      "UUID": "com.jschools.insta360link2.overhead",
+      "Name": "Overhead",
+      "Icon": "icons/overhead-on",
+      "Tooltip": "Toggle overhead / top-down view",
       "Controllers": ["Keypad", "Encoder"],
       "SupportedInMultiActions": true,
-      "States": [{ "Image": "icons/desk", "Name": "DeskView On" }]
+      "States": [
+        { "Image": "icons/overhead-off", "Name": "Off" },
+        { "Image": "icons/overhead-on", "Name": "On" }
+      ]
     },
     {
-      "UUID": "com.jschools.insta360link2.deskviewoff",
-      "Name": "DeskView Off",
-      "Icon": "icons/desk",
-      "Tooltip": "Disable DeskView (normal mode)",
+      "UUID": "com.jschools.insta360link2.mirror",
+      "Name": "Mirror",
+      "Icon": "icons/mirror-on",
+      "Tooltip": "Toggle horizontal mirror / flip",
       "Controllers": ["Keypad", "Encoder"],
       "SupportedInMultiActions": true,
-      "States": [{ "Image": "icons/desk", "Name": "DeskView Off" }]
+      "States": [
+        { "Image": "icons/mirror-off", "Name": "Off" },
+        { "Image": "icons/mirror-on", "Name": "On" }
+      ]
     },
     {
-      "UUID": "com.jschools.insta360link2.mirroron",
-      "Name": "Mirror On",
-      "Icon": "icons/mirror",
-      "Tooltip": "Enable horizontal mirror",
+      "UUID": "com.jschools.insta360link2.whiteboard",
+      "Name": "Whiteboard",
+      "Icon": "icons/board-on",
+      "Tooltip": "Toggle whiteboard mode",
       "Controllers": ["Keypad", "Encoder"],
       "SupportedInMultiActions": true,
-      "States": [{ "Image": "icons/mirror", "Name": "Mirror On" }]
+      "States": [
+        { "Image": "icons/board-off", "Name": "Off" },
+        { "Image": "icons/board-on", "Name": "On" }
+      ]
+    },
+    {
+      "UUID": "com.jschools.insta360link2.privacy",
+      "Name": "Privacy",
+      "Icon": "icons/privacy-on",
+      "Tooltip": "Toggle gimbal-down privacy (Link 2)",
+      "Controllers": ["Keypad", "Encoder"],
+      "SupportedInMultiActions": true,
+      "States": [
+        { "Image": "icons/privacy-off", "Name": "Off" },
+        { "Image": "icons/privacy-on", "Name": "On" }
+      ]
+    },
+    {
+      "UUID": "com.jschools.insta360link2.hdr",
+      "Name": "HDR",
+      "Icon": "icons/hdr-on",
+      "Tooltip": "Toggle HDR",
+      "Controllers": ["Keypad", "Encoder"],
+      "SupportedInMultiActions": true,
+      "States": [
+        { "Image": "icons/hdr-off", "Name": "Off" },
+        { "Image": "icons/hdr-on", "Name": "On" }
+      ]
     },
     {
       "UUID": "com.jschools.insta360link2.center",
@@ -84,83 +123,29 @@
     {
       "UUID": "com.jschools.insta360link2.normal",
       "Name": "Normal Mode",
-      "Icon": "icons/center",
+      "Icon": "icons/normal",
       "Tooltip": "Return to standard video mode",
       "Controllers": ["Keypad", "Encoder"],
       "SupportedInMultiActions": true,
-      "States": [{ "Image": "icons/center", "Name": "Normal" }]
+      "States": [{ "Image": "icons/normal", "Name": "Normal" }]
     },
     {
       "UUID": "com.jschools.insta360link2.zoomin",
       "Name": "Zoom In",
-      "Icon": "icons/center",
+      "Icon": "icons/zoom-in",
       "Tooltip": "Zoom in (+50)",
       "Controllers": ["Keypad", "Encoder"],
       "SupportedInMultiActions": true,
-      "States": [{ "Image": "icons/center", "Name": "Zoom +" }]
+      "States": [{ "Image": "icons/zoom-in", "Name": "Zoom +" }]
     },
     {
       "UUID": "com.jschools.insta360link2.zoomout",
       "Name": "Zoom Out",
-      "Icon": "icons/center",
+      "Icon": "icons/zoom-out",
       "Tooltip": "Zoom out (−50)",
       "Controllers": ["Keypad", "Encoder"],
       "SupportedInMultiActions": true,
-      "States": [{ "Image": "icons/center", "Name": "Zoom −" }]
-    },
-    {
-      "UUID": "com.jschools.insta360link2.overheadon",
-      "Name": "Overhead On",
-      "Icon": "icons/desk",
-      "Tooltip": "Enable overhead view mode",
-      "Controllers": ["Keypad", "Encoder"],
-      "SupportedInMultiActions": true,
-      "States": [{ "Image": "icons/desk", "Name": "Overhead" }]
-    },
-    {
-      "UUID": "com.jschools.insta360link2.overheadoff",
-      "Name": "Overhead Off",
-      "Icon": "icons/desk",
-      "Tooltip": "Disable overhead view",
-      "Controllers": ["Keypad", "Encoder"],
-      "SupportedInMultiActions": true,
-      "States": [{ "Image": "icons/desk", "Name": "Over Off" }]
-    },
-    {
-      "UUID": "com.jschools.insta360link2.whiteboardon",
-      "Name": "Whiteboard On",
-      "Icon": "icons/desk",
-      "Tooltip": "Enable whiteboard mode",
-      "Controllers": ["Keypad", "Encoder"],
-      "SupportedInMultiActions": true,
-      "States": [{ "Image": "icons/desk", "Name": "Board" }]
-    },
-    {
-      "UUID": "com.jschools.insta360link2.whiteboardoff",
-      "Name": "Whiteboard Off",
-      "Icon": "icons/desk",
-      "Tooltip": "Disable whiteboard mode",
-      "Controllers": ["Keypad", "Encoder"],
-      "SupportedInMultiActions": true,
-      "States": [{ "Image": "icons/desk", "Name": "Board Off" }]
-    },
-    {
-      "UUID": "com.jschools.insta360link2.privacyon",
-      "Name": "Privacy On",
-      "Icon": "icons/reset",
-      "Tooltip": "Gimbal-down privacy (Link 2 only)",
-      "Controllers": ["Keypad", "Encoder"],
-      "SupportedInMultiActions": true,
-      "States": [{ "Image": "icons/reset", "Name": "Privacy" }]
-    },
-    {
-      "UUID": "com.jschools.insta360link2.privacyoff",
-      "Name": "Privacy Off",
-      "Icon": "icons/reset",
-      "Tooltip": "Disable privacy mode",
-      "Controllers": ["Keypad", "Encoder"],
-      "SupportedInMultiActions": true,
-      "States": [{ "Image": "icons/reset", "Name": "Priv Off" }]
+      "States": [{ "Image": "icons/zoom-out", "Name": "Zoom −" }]
     }
   ]
 }

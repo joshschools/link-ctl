@@ -1,6 +1,6 @@
 {
   "name": "com.jschools.insta360link2",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Insta360 Link 2 camera control for OpenDeck on Linux (via link-ctl)",
   "main": "index.js",
   "author": "jschools",

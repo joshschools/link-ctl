@@ -64,15 +64,27 @@ Use `--quiet` so Stream Deck does not capture informational stdout.
 | `awb_toggle.sh` | Toggle auto white balance |
 | `privacy_on.sh` / `privacy_off.sh` | Link 2 gimbal-down privacy |
 
-## Suggested 15-key layout
+## Suggested 15-key layout (native plugin)
+
+Toggle actions use one key per feature — press to flip on/off; the icon
+updates from `link_ctl.py status … --json` readback.
+
+```
+[ Track↕ ] [ Desk↕  ] [ Over↕  ] [ Mirror↕] [ Center   ]
+[ Board↕ ] [ HDR↕   ] [ Priv↕  ] [ Zoom + ] [ Zoom −   ]
+[ Normal ] [ Reset  ] [ spare    ] [ spare  ] [ spare    ]
+```
+
+The pre-built **Link2Plugin** profile uses the first 12 keys above (3 spare).
+Single-press actions: Center, Zoom ±, Normal, Reset.
+
+Legacy shell-script layout (Starter Pack / separate on+off keys):
 
 ```
 [ Track ON ] [ Track OFF ] [ Desk ON  ] [ Desk OFF ] [ Center   ]
 [ WB ON    ] [ WB OFF    ] [ HDR ON   ] [ HDR OFF  ] [ Mirror   ]
 [ Zoom +   ] [ Zoom -    ] [ Normal   ] [ Privacy  ] [ Overhead ]
 ```
-
-Map **Privacy** to `privacy_on.sh` / `privacy_off.sh` (Link 2 only).
 
 ## OpenDeck (recommended on Linux)
 
@@ -151,20 +163,27 @@ python3 tools/build_opendeck_profile.py --install
 The plugin stores your checkout path in `link-ctl-path.json` at install time.
 Re-run `install.sh` after moving the repo.
 
-### OpenDeck 15-key layout
+### OpenDeck 15-key layout (Link2Plugin profile)
+
+Compact toggle layout — 12 actions on 12 keys (3 spare):
 
 ```
-[ Track    ] [ Track Off] [ Desk     ] [ Desk Off ] [ Center   ]
-[ Overhead ] [ Over Off ] [ Board    ] [ Board Off] [ Mirror   ]
-[ Zoom +   ] [ Zoom −   ] [ Reset    ] [ Privacy  ] [ Priv Off ]
+[ Track↕ ] [ Desk↕  ] [ Over↕  ] [ Mirror↕] [ Center   ]
+[ Board↕ ] [ HDR↕   ] [ Priv↕  ] [ Zoom + ] [ Zoom −   ]
+[ Normal ] [ Reset  ]
 ```
+
+Toggle keys call `link_ctl.py <feature> toggle` then refresh state via
+`status <feature> --json`. Icons switch between off/on variants defined in
+`manifest.json` (`setState` 0 = off, 1 = on).
 
 ### Plugin development
 
 Source: `streamdeck/opendeck-plugin/com.jschools.insta360link2.sdPlugin/`
 
-- `manifest.json` — action UUIDs (Stream Deck SDK format)
-- `index.js` — WebSocket handler; spawns `link_ctl.py --quiet …` on key press
+- `manifest.json` — 7 toggle + 5 single actions (Stream Deck SDK multi-state)
+- `index.js` — WebSocket handler; toggles + status readback; spawns `link_ctl.py`
+- `icons/` — 72×72 and @2x PNGs (`icons/generate_icons.py` to regenerate)
 - `CodePathLin: index.js` — interpreted Node plugin (no binary build)
 
 OpenDeck plugin protocol matches the Stream Deck SDK: connect to `ws://127.0.0.1:<port>`,

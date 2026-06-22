@@ -36,6 +36,11 @@ if [[ ! -d "$PLUGIN_SRC" ]]; then
   exit 1
 fi
 
+# Regenerate icons if rsvg-convert is available (optional; icons are committed).
+if command -v rsvg-convert >/dev/null 2>&1; then
+  python3 "$PLUGIN_SRC/icons/generate_icons.py" 2>/dev/null || true
+fi
+
 mkdir -p "$(dirname "$PLUGIN_DEST")"
 rm -rf "$PLUGIN_DEST"
 cp -a "$PLUGIN_SRC" "$PLUGIN_DEST"

@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Generate an OpenDeck profile using the Insta360 Link 2 native plugin actions.
 
+Compact 15-key MK.2 layout with toggle actions (one key per feature).
+
 Usage:
     python3 tools/build_opendeck_plugin_profile.py
     python3 tools/build_opendeck_plugin_profile.py --install
@@ -18,50 +20,42 @@ from pathlib import Path
 PLUGIN_DIR = 'com.jschools.insta360link2.sdPlugin'
 PROFILE_NAME = 'Link2Plugin'
 
-TRANSPARENT_IMAGE = (
-    'data:image/png;base64,'
-    'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIW2NgYGD4DwABBAEAwS2OUAAAAABJRU5ErkJggg=='
-)
-
-# index, label, bg, action suffix, icon stem
-BUTTONS: list[tuple[int, str, str, str, str]] = [
-    (0,  'Track',    '#2563eb', 'trackon',      'track'),
-    (1,  'Track\nOff', '#1e40af', 'trackoff',     'track'),
-    (2,  'Desk',     '#7c3aed', 'deskviewon',   'desk'),
-    (3,  'Desk\nOff', '#5b21b6', 'deskviewoff',  'desk'),
-    (4,  'Center',   '#0d9488', 'center',       'center'),
-    (5,  'Overhead', '#0369a1', 'overheadon',   'desk'),
-    (6,  'Over\nOff', '#075985', 'overheadoff',  'desk'),
-    (7,  'Board',    '#c026d3', 'whiteboardon', 'desk'),
-    (8,  'Board\nOff', '#a21caf', 'whiteboardoff', 'desk'),
-    (9,  'Mirror',   '#9333ea', 'mirroron',     'mirror'),
-    (10, 'Zoom +',   '#15803d', 'zoomin',       'center'),
-    (11, 'Zoom −',   '#166534', 'zoomout',      'center'),
-    (12, 'Reset',    '#c2410c', 'reset',        'reset'),
-    (13, 'Privacy',  '#b91c1c', 'privacyon',    'reset'),
-    (14, 'Priv\nOff', '#991b1b', 'privacyoff',   'reset'),
+# index, label, bg_off, bg_on, action suffix, icon stem, is_toggle
+BUTTONS: list[tuple[int, str, str, str, str, str, bool]] = [
+    (0,  'Track',  '#334155', '#2563eb', 'track',      'track',    True),
+    (1,  'Desk',   '#4c1d95', '#7c3aed', 'deskview',   'desk',     True),
+    (2,  'Over',   '#0c4a6e', '#0369a1', 'overhead',   'overhead', True),
+    (3,  'Mirror', '#581c87', '#9333ea', 'mirror',     'mirror',   True),
+    (4,  'Center', '#0d9488', '#0d9488', 'center',     'center',   False),
+    (5,  'Board',  '#86198f', '#c026d3', 'whiteboard', 'board',    True),
+    (6,  'HDR',    '#713f12', '#ca8a04', 'hdr',        'hdr',      True),
+    (7,  'Priv',   '#7f1d1d', '#b91c1c', 'privacy',    'privacy',  True),
+    (8,  'Zoom +', '#15803d', '#15803d', 'zoomin',     'zoom-in',  False),
+    (9,  'Zoom −', '#166534', '#166534', 'zoomout',    'zoom-out', False),
+    (10, 'Normal', '#475569', '#475569', 'normal',     'normal',   False),
+    (11, 'Reset',  '#c2410c', '#c2410c', 'reset',      'reset',    False),
 ]
 
 ACTION_NAMES = {
-    'trackon': 'Track On',
-    'trackoff': 'Track Off',
-    'deskviewon': 'DeskView On',
-    'deskviewoff': 'DeskView Off',
-    'mirroron': 'Mirror On',
+    'track': 'AI Tracking',
+    'deskview': 'DeskView',
+    'overhead': 'Overhead',
+    'mirror': 'Mirror',
+    'whiteboard': 'Whiteboard',
+    'privacy': 'Privacy',
+    'hdr': 'HDR',
     'center': 'Center',
     'reset': 'Reset Camera',
+    'normal': 'Normal Mode',
     'zoomin': 'Zoom In',
     'zoomout': 'Zoom Out',
-    'overheadon': 'Overhead On',
-    'overheadoff': 'Overhead Off',
-    'whiteboardon': 'Whiteboard On',
-    'whiteboardoff': 'Whiteboard Off',
-    'privacyon': 'Privacy On',
-    'privacyoff': 'Privacy Off',
 }
 
 
-def plugin_icon(stem: str) -> str:
+def plugin_icon(stem: str, *, on: bool = True) -> str:
+    if stem in ('track', 'desk', 'overhead', 'mirror', 'board', 'privacy', 'hdr'):
+        state = 'on' if on else 'off'
+        return f'plugins/{PLUGIN_DIR}/icons/{stem}-{state}.png'
     return f'plugins/{PLUGIN_DIR}/icons/{stem}.png'
 
 
@@ -71,49 +65,66 @@ def _state(label: str, bg: str, icon: str) -> dict:
         'background_colour': bg,
         'colour': '#FFFFFF',
         'family': 'Liberation Sans',
-        'image': TRANSPARENT_IMAGE,
-        'image_scale': 10,
+        'image': icon,
+        'image_scale': 80,
         'name': '',
         'show': True,
-        'size': 13,
+        'size': 11,
         'stroke_colour': '#000000',
-        'stroke_size': 2,
+        'stroke_size': 0,
         'style': 'Regular',
         'text': label,
         'underline': False,
     }
 
 
-def _make_key(index: int, label: str, bg: str, suffix: str, icon_stem: str) -> dict:
+def _make_key(
+    index: int,
+    label: str,
+    bg_off: str,
+    bg_on: str,
+    suffix: str,
+    icon_stem: str,
+    is_toggle: bool,
+) -> dict:
     uuid = f'com.jschools.insta360link2.{suffix}'
-    icon = plugin_icon(icon_stem)
-    state = _state(label, bg, icon)
+    name = ACTION_NAMES.get(suffix, suffix)
+    if is_toggle:
+        states = [
+            _state(label, bg_off, plugin_icon(icon_stem, on=False)),
+            _state(label, bg_on, plugin_icon(icon_stem, on=True)),
+        ]
+        action_icon = plugin_icon(icon_stem, on=True)
+    else:
+        state = _state(label, bg_on, plugin_icon(icon_stem))
+        states = [dict(state)]
+        action_icon = plugin_icon(icon_stem)
     return {
         'action': {
             'controllers': ['Keypad', 'Encoder'],
             'disable_automatic_states': False,
-            'icon': icon,
-            'name': ACTION_NAMES.get(suffix, suffix),
+            'icon': action_icon,
+            'name': name,
             'plugin': PLUGIN_DIR,
             'property_inspector': None,
             'supported_in_multi_actions': True,
-            'tooltip': ACTION_NAMES.get(suffix, suffix),
+            'tooltip': name,
             'uuid': uuid,
             'visible_in_action_list': True,
-            'states': [dict(state)],
+            'states': [dict(s) for s in states],
         },
         'children': None,
         'context': f'Keypad.{index}.0',
         'current_state': 0,
         'settings': {},
-        'states': [dict(state)],
+        'states': [dict(s) for s in states],
     }
 
 
 def build_profile() -> dict:
     keys = [
-        _make_key(idx, label, bg, suffix, icon)
-        for idx, label, bg, suffix, icon in BUTTONS
+        _make_key(idx, label, bg_off, bg_on, suffix, icon, toggle)
+        for idx, label, bg_off, bg_on, suffix, icon, toggle in BUTTONS
     ]
     return {'keys': keys, 'sliders': []}
 
