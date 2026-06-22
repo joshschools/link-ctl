@@ -201,7 +201,8 @@ class TestReadStatusUsb(unittest.TestCase):
     def test_bitmask_bit_options(self):
         for opt, bit_const in (('hdr', link_ctl.BIT_HDR),
                                ('mirror', link_ctl.BIT_MIRROR),
-                               ('gesture-zoom', link_ctl.BIT_GESTURE_ZOOM)):
+                               ('gesture-zoom', link_ctl.BIT_GESTURE_ZOOM),
+                               ('smartcomposition', link_ctl.BIT_SMARTCOMP)):
             with self.subTest(opt=opt):
                 with mock.patch.object(link_ctl, '_bitmask_get_bit',
                                        return_value=True) as m:
@@ -309,12 +310,12 @@ class TestReadStatusUsb(unittest.TestCase):
         with self.assertRaises(KeyError):
             link_ctl.read_status_usb('definitely-not-readable')
 
-    def test_smartcomposition_not_usb_readable(self):
-        # smartcomposition's XU bit is unconfirmed — the table says usb=False.
-        # If that changes the test should be updated deliberately.
-        self.assertFalse(link_ctl.STATUS_OPTIONS['smartcomposition']['usb'])
-        with self.assertRaises(KeyError):
-            link_ctl.read_status_usb('smartcomposition')
+    def test_smartcomposition_usb_readable(self):
+        self.assertTrue(link_ctl.STATUS_OPTIONS['smartcomposition']['usb'])
+        with mock.patch.object(link_ctl, '_bitmask_get_bit', return_value=True) as m:
+            r = link_ctl.read_status_usb('smartcomposition')
+        m.assert_called_once_with(link_ctl.BIT_SMARTCOMP)
+        self.assertTrue(r['is_on'])
 
 
 class TestReadAiModeLink2(unittest.TestCase):

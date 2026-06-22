@@ -567,10 +567,11 @@ def usb_preset_list() -> list[dict]:
 # path (paramType 11) until we can empirically confirm each bit.
 BITMASK_UNIT = 9
 BITMASK_SEL  = 0x1B
+BIT_SMARTCOMP     = 0   # AiZoom / smart composition master (Link 2 verified 2026-06)
 BIT_HDR           = 2
 BIT_MIRROR        = 3
 BIT_GESTURE_ZOOM  = 4
-# TBD: BIT_SMARTCOMP / BIT_AF / BIT_VSCREEN / … — need capture to confirm
+# TBD: BIT_AF / BIT_VSCREEN / gesture-track bits — need capture to confirm
 
 def _bitmask_get() -> int:
     return int.from_bytes(_uvc_get(BITMASK_UNIT, BITMASK_SEL, 2), 'little')
@@ -1077,7 +1078,7 @@ STATUS_OPTIONS: dict[str, dict] = {
     'autoexposure':     {'kind': 'bool',    'usb': True,  'ws': True,  'linux': True},
     'awb':              {'kind': 'bool',    'usb': True,  'ws': True,  'linux': True},
     'autofocus':        {'kind': 'bool',    'usb': True,  'ws': False, 'linux': True},
-    'smartcomposition': {'kind': 'bool',    'usb': False, 'ws': True,  'linux': False},
+    'smartcomposition': {'kind': 'bool',    'usb': True,  'ws': True,  'linux': False},
     'noise-cancel':     {'kind': 'bool',    'usb': True,  'ws': False, 'linux': False},
     'privacy':          {'kind': 'bool',    'usb': True,  'ws': False, 'linux': False},
     'smartcomp-frame':  {'kind': 'enum',    'usb': True,  'ws': False, 'linux': False},
@@ -1128,6 +1129,8 @@ def read_status_usb(option: str) -> dict:
         v = _bitmask_get_bit(BIT_MIRROR);       return _status_result(option, v, is_on=v)
     if option == 'gesture-zoom':
         v = _bitmask_get_bit(BIT_GESTURE_ZOOM); return _status_result(option, v, is_on=v)
+    if option == 'smartcomposition':
+        v = _bitmask_get_bit(BIT_SMARTCOMP);    return _status_result(option, v, is_on=v)
 
     if option == 'autoexposure':
         v = _uvc_get(9, 0x1e, 1) == bytes([2]); return _status_result(option, v, is_on=v)
@@ -1290,9 +1293,10 @@ def usb_image_dispatch(args) -> None:
     cmd = args.command
     try:
         # ── Bitmask-bit controls (HDR / mirror / gesture-zoom) ────────────────
-        if cmd in ('hdr', 'mirror', 'gesture-zoom'):
+        if cmd in ('hdr', 'mirror', 'gesture-zoom', 'smartcomposition'):
             bit = {'hdr': BIT_HDR, 'mirror': BIT_MIRROR,
-                   'gesture-zoom': BIT_GESTURE_ZOOM}[cmd]
+                   'gesture-zoom': BIT_GESTURE_ZOOM,
+                   'smartcomposition': BIT_SMARTCOMP}[cmd]
             target = args.state
             cur = _bitmask_get_bit(bit)
             if target in (None, 'toggle'):
@@ -3054,11 +3058,9 @@ def main():
     # app for every user-facing control. Firmware update, device rename,
     # and factory reset still require the desktop app (they aren't exposed
     # as XU selectors we can discover).
-    # smartcomposition (on/off master) is intentionally NOT in the USB set —
-    # its XU bit hasn't been confirmed, so the command still falls through
-    # to the WebSocket path (paramType 11). smartcomp-frame (head/half/full)
-    # IS USB-direct since that selector is documented.
-    USB_IMG_CMDS = {'hdr', 'mirror', 'gesture-zoom',
+    # smartcomp-frame (head/half/full) uses XU9 sel 0x13; smartcomposition
+    # master is func-enable bit 0 (verified on Link 2 Linux USB).
+    USB_IMG_CMDS = {'hdr', 'mirror', 'gesture-zoom', 'smartcomposition',
                     'brightness', 'contrast', 'saturation', 'sharpness',
                     'wb-temp', 'exposurecomp', 'autoexposure', 'awb',
                     'anti-flicker', 'autofocus',
