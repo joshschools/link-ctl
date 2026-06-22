@@ -2,7 +2,7 @@
   "Name": "Insta360 Link 2",
   "Description": "Control Insta360 Link 2 on Linux via link-ctl (USB). No Windows Insta360 app required.",
   "Author": "jschools",
-  "Version": "0.2.0",
+  "Version": "0.3.0",
   "Icon": "icons/plugin",
   "Category": "Camera",
   "CategoryIcon": "icons/plugin",
@@ -26,8 +26,8 @@
       "Controllers": ["Keypad", "Encoder"],
       "SupportedInMultiActions": true,
       "States": [
-        { "Image": "icons/track-off", "Name": "Off" },
-        { "Image": "icons/track-on", "Name": "On" }
+        { "Image": "icons/track-off", "Name": "Off", "TitleAlignment": "bottom" },
+        { "Image": "icons/track-on", "Name": "On", "TitleAlignment": "bottom" }
       ]
     },
     {
@@ -38,20 +38,8 @@
       "Controllers": ["Keypad", "Encoder"],
       "SupportedInMultiActions": true,
       "States": [
-        { "Image": "icons/desk-off", "Name": "Off" },
-        { "Image": "icons/desk-on", "Name": "On" }
-      ]
-    },
-    {
-      "UUID": "com.jschools.insta360link2.overhead",
-      "Name": "Overhead",
-      "Icon": "icons/overhead-on",
-      "Tooltip": "Toggle overhead / top-down view",
-      "Controllers": ["Keypad", "Encoder"],
-      "SupportedInMultiActions": true,
-      "States": [
-        { "Image": "icons/overhead-off", "Name": "Off" },
-        { "Image": "icons/overhead-on", "Name": "On" }
+        { "Image": "icons/desk-off", "Name": "Off", "TitleAlignment": "bottom" },
+        { "Image": "icons/desk-on", "Name": "On", "TitleAlignment": "bottom" }
       ]
     },
     {
@@ -62,8 +50,8 @@
       "Controllers": ["Keypad", "Encoder"],
       "SupportedInMultiActions": true,
       "States": [
-        { "Image": "icons/mirror-off", "Name": "Off" },
-        { "Image": "icons/mirror-on", "Name": "On" }
+        { "Image": "icons/mirror-off", "Name": "Off", "TitleAlignment": "bottom" },
+        { "Image": "icons/mirror-on", "Name": "On", "TitleAlignment": "bottom" }
       ]
     },
     {
@@ -74,8 +62,8 @@
       "Controllers": ["Keypad", "Encoder"],
       "SupportedInMultiActions": true,
       "States": [
-        { "Image": "icons/board-off", "Name": "Off" },
-        { "Image": "icons/board-on", "Name": "On" }
+        { "Image": "icons/board-off", "Name": "Off", "TitleAlignment": "bottom" },
+        { "Image": "icons/board-on", "Name": "On", "TitleAlignment": "bottom" }
       ]
     },
     {
@@ -86,8 +74,8 @@
       "Controllers": ["Keypad", "Encoder"],
       "SupportedInMultiActions": true,
       "States": [
-        { "Image": "icons/privacy-off", "Name": "Off" },
-        { "Image": "icons/privacy-on", "Name": "On" }
+        { "Image": "icons/privacy-off", "Name": "Off", "TitleAlignment": "bottom" },
+        { "Image": "icons/privacy-on", "Name": "On", "TitleAlignment": "bottom" }
       ]
     },
     {
@@ -98,8 +86,8 @@
       "Controllers": ["Keypad", "Encoder"],
       "SupportedInMultiActions": true,
       "States": [
-        { "Image": "icons/hdr-off", "Name": "Off" },
-        { "Image": "icons/hdr-on", "Name": "On" }
+        { "Image": "icons/hdr-off", "Name": "Off", "TitleAlignment": "bottom" },
+        { "Image": "icons/hdr-on", "Name": "On", "TitleAlignment": "bottom" }
       ]
     },
     {
@@ -109,7 +97,7 @@
       "Tooltip": "Center pan/tilt and reset zoom",
       "Controllers": ["Keypad", "Encoder"],
       "SupportedInMultiActions": true,
-      "States": [{ "Image": "icons/center", "Name": "Center" }]
+      "States": [{ "Image": "icons/center", "Name": "Center", "TitleAlignment": "bottom" }]
     },
     {
       "UUID": "com.jschools.insta360link2.reset",
@@ -118,7 +106,7 @@
       "Tooltip": "Recover hung Link 2 USB and return to normal mode",
       "Controllers": ["Keypad", "Encoder"],
       "SupportedInMultiActions": true,
-      "States": [{ "Image": "icons/reset", "Name": "Reset" }]
+      "States": [{ "Image": "icons/reset", "Name": "Reset", "TitleAlignment": "bottom" }]
     },
     {
       "UUID": "com.jschools.insta360link2.normal",
@@ -127,7 +115,7 @@
       "Tooltip": "Return to standard video mode",
       "Controllers": ["Keypad", "Encoder"],
       "SupportedInMultiActions": true,
-      "States": [{ "Image": "icons/normal", "Name": "Normal" }]
+      "States": [{ "Image": "icons/normal", "Name": "Normal", "TitleAlignment": "bottom" }]
     },
     {
       "UUID": "com.jschools.insta360link2.zoomin",
@@ -136,7 +124,7 @@
       "Tooltip": "Zoom in (+50)",
       "Controllers": ["Keypad", "Encoder"],
       "SupportedInMultiActions": true,
-      "States": [{ "Image": "icons/zoom-in", "Name": "Zoom +" }]
+      "States": [{ "Image": "icons/zoom-in", "Name": "Zoom +", "TitleAlignment": "bottom" }]
     },
     {
       "UUID": "com.jschools.insta360link2.zoomout",
@@ -145,7 +133,7 @@
       "Tooltip": "Zoom out (−50)",
       "Controllers": ["Keypad", "Encoder"],
       "SupportedInMultiActions": true,
-      "States": [{ "Image": "icons/zoom-out", "Name": "Zoom −" }]
+      "States": [{ "Image": "icons/zoom-out", "Name": "Zoom −", "TitleAlignment": "bottom" }]
     }
   ]
 }

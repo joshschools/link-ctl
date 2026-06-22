@@ -55,7 +55,6 @@ Use `--quiet` so Stream Deck does not capture informational stdout.
 | `track_on.sh` / `track_off.sh` | AI tracking |
 | `deskview_on.sh` / `deskview_off.sh` | DeskView |
 | `whiteboard_on.sh` / `whiteboard_off.sh` | Whiteboard |
-| `overhead_on.sh` / `overhead_off.sh` | Overhead view |
 | `normal.sh` | Standard mode |
 | `zoom_in.sh` / `zoom_out.sh` | Zoom ±50 |
 | `hdr_on.sh` / `hdr_off.sh` | HDR |
@@ -66,16 +65,20 @@ Use `--quiet` so Stream Deck does not capture informational stdout.
 
 ## Suggested 15-key layout (native plugin)
 
-Toggle actions use one key per feature — press to flip on/off; the icon
-updates from `link_ctl.py status … --json` readback.
+Toggle actions use one key per feature — press to flip on/off. Each toggle
+shows **OFF** or **ON** below the icon (Lucide line icons + `setTitle`
+readback from `link_ctl.py status … --json`).
+
+Overhead mode was removed from the native plugin (unreliable on Link 2 Linux);
+use shell scripts or `link_ctl.py overhead` directly if needed.
 
 ```
-[ Track↕ ] [ Desk↕  ] [ Over↕  ] [ Mirror↕] [ Center   ]
-[ Board↕ ] [ HDR↕   ] [ Priv↕  ] [ Zoom + ] [ Zoom −   ]
-[ Normal ] [ Reset  ] [ spare    ] [ spare  ] [ spare    ]
+[ Track↕ ] [ Desk↕  ] [ Mirror↕] [ Board↕ ] [ Center   ]
+[ HDR↕   ] [ Priv↕  ] [ Normal   ] [ Zoom + ] [ Zoom −   ]
+[ Reset  ] [ spare  ] [ spare    ] [ spare  ] [ spare    ]
 ```
 
-The pre-built **Link2Plugin** profile uses the first 12 keys above (3 spare).
+The pre-built **Link2Plugin** profile uses 11 keys (4 spare).
 Single-press actions: Center, Zoom ±, Normal, Reset.
 
 Legacy shell-script layout (Starter Pack / separate on+off keys):
@@ -165,25 +168,26 @@ Re-run `install.sh` after moving the repo.
 
 ### OpenDeck 15-key layout (Link2Plugin profile)
 
-Compact toggle layout — 12 actions on 12 keys (3 spare):
+Compact toggle layout — 11 actions on 11 keys (4 spare). No overhead key.
 
 ```
-[ Track↕ ] [ Desk↕  ] [ Over↕  ] [ Mirror↕] [ Center   ]
-[ Board↕ ] [ HDR↕   ] [ Priv↕  ] [ Zoom + ] [ Zoom −   ]
-[ Normal ] [ Reset  ]
+[ Track↕ ] [ Desk↕  ] [ Mirror↕] [ Board↕ ] [ Center   ]
+[ HDR↕   ] [ Priv↕  ] [ Normal   ] [ Zoom + ] [ Zoom −   ]
+[ Reset  ]
 ```
 
 Toggle keys call `link_ctl.py <feature> toggle` then refresh state via
-`status <feature> --json`. Icons switch between off/on variants defined in
-`manifest.json` (`setState` 0 = off, 1 = on).
+`status <feature> --json`. Icons use Lucide SVGs with OFF/ON labels baked
+into PNGs; `setState` (0 = off, 1 = on) and `setTitle` keep the hardware
+label in sync.
 
 ### Plugin development
 
 Source: `streamdeck/opendeck-plugin/com.jschools.insta360link2.sdPlugin/`
 
-- `manifest.json` — 7 toggle + 5 single actions (Stream Deck SDK multi-state)
-- `index.js` — WebSocket handler; toggles + status readback; spawns `link_ctl.py`
-- `icons/` — 72×72 and @2x PNGs (`icons/generate_icons.py` to regenerate)
+- `manifest.json` — 6 toggle + 5 single actions (overhead removed)
+- `index.js` — WebSocket handler; toggles + status readback + `setTitle` OFF/ON
+- `icons/` — Lucide-based 72×72 and @2x PNGs (`icons/generate_icons.py`)
 - `CodePathLin: index.js` — interpreted Node plugin (no binary build)
 
 OpenDeck plugin protocol matches the Stream Deck SDK: connect to `ws://127.0.0.1:<port>`,

@@ -12,7 +12,6 @@ const PREFIX = `${PLUGIN_UUID}.`;
 const TOGGLES = new Set([
   "track",
   "deskview",
-  "overhead",
   "mirror",
   "whiteboard",
   "privacy",
@@ -45,6 +44,7 @@ if (!port || !pluginUUID || !registerEvent) {
 /** @type {Map<string, { short: string, context: string }>} */
 const contexts = new Map();
 const lastStateCache = new Map();
+const lastTitleCache = new Map();
 
 /** @returns {{ repoRoot?: string, linkCtlPath?: string, python?: string }} */
 function loadConfig() {
@@ -165,6 +165,18 @@ function send(obj) {
   }
 }
 
+function setTitle(context, title) {
+  if (lastTitleCache.get(context) === title) {
+    return;
+  }
+  lastTitleCache.set(context, title);
+  send({
+    event: "setTitle",
+    context,
+    payload: { title, target: 0 },
+  });
+}
+
 function setState(context, state) {
   if (lastStateCache.get(context) === state) {
     return;
@@ -177,6 +189,12 @@ function setState(context, state) {
   });
 }
 
+function applyToggleFeedback(context, isOn) {
+  const state = isOn ? 1 : 0;
+  setState(context, state);
+  setTitle(context, isOn ? "ON" : "OFF");
+}
+
 function refreshToggleState(context, option) {
   runLinkCtl(["status", option, "--json", "-q"], (err, stdout) => {
     if (err && !stdout) {
@@ -185,7 +203,7 @@ function refreshToggleState(context, option) {
     try {
       const result = JSON.parse(stdout);
       if (typeof result.is_on === "boolean") {
-        setState(context, result.is_on ? 1 : 0);
+        applyToggleFeedback(context, result.is_on);
       }
     } catch {
       // Camera unplugged or status unavailable — leave current state.
@@ -228,6 +246,8 @@ ws.on("message", (raw) => {
       contexts.set(context, { short, context });
       if (TOGGLES.has(short)) {
         refreshToggleState(context, short);
+      } else {
+        setTitle(context, "");
       }
       break;
     }
@@ -235,6 +255,7 @@ ws.on("message", (raw) => {
     case "willDisappear":
       contexts.delete(context);
       lastStateCache.delete(context);
+      lastTitleCache.delete(context);
       break;
 
     case "keyDown":

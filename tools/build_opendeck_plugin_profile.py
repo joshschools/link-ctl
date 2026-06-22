@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate an OpenDeck profile using the Insta360 Link 2 native plugin actions.
 
-Compact 15-key MK.2 layout with toggle actions (one key per feature).
+Compact 15-key MK.2 layout — 11 keys used, overhead removed.
 
 Usage:
     python3 tools/build_opendeck_plugin_profile.py
@@ -20,26 +20,24 @@ from pathlib import Path
 PLUGIN_DIR = 'com.jschools.insta360link2.sdPlugin'
 PROFILE_NAME = 'Link2Plugin'
 
-# index, label, bg_off, bg_on, action suffix, icon stem, is_toggle
-BUTTONS: list[tuple[int, str, str, str, str, str, bool]] = [
-    (0,  'Track',  '#334155', '#2563eb', 'track',      'track',    True),
-    (1,  'Desk',   '#4c1d95', '#7c3aed', 'deskview',   'desk',     True),
-    (2,  'Over',   '#0c4a6e', '#0369a1', 'overhead',   'overhead', True),
-    (3,  'Mirror', '#581c87', '#9333ea', 'mirror',     'mirror',   True),
-    (4,  'Center', '#0d9488', '#0d9488', 'center',     'center',   False),
-    (5,  'Board',  '#86198f', '#c026d3', 'whiteboard', 'board',    True),
-    (6,  'HDR',    '#713f12', '#ca8a04', 'hdr',        'hdr',      True),
-    (7,  'Priv',   '#7f1d1d', '#b91c1c', 'privacy',    'privacy',  True),
-    (8,  'Zoom +', '#15803d', '#15803d', 'zoomin',     'zoom-in',  False),
-    (9,  'Zoom −', '#166534', '#166534', 'zoomout',    'zoom-out', False),
-    (10, 'Normal', '#475569', '#475569', 'normal',     'normal',   False),
-    (11, 'Reset',  '#c2410c', '#c2410c', 'reset',      'reset',    False),
+# index, bg_off, bg_on, action suffix, icon stem, is_toggle
+BUTTONS: list[tuple[int, str, str, str, str, bool]] = [
+    (0,  '#475569', '#2563eb', 'track',      'track',    True),
+    (1,  '#475569', '#7c3aed', 'deskview',   'desk',     True),
+    (2,  '#475569', '#9333ea', 'mirror',     'mirror',   True),
+    (3,  '#475569', '#c026d3', 'whiteboard', 'board',    True),
+    (4,  '#0d9488', '#0d9488', 'center',     'center',   False),
+    (5,  '#475569', '#ca8a04', 'hdr',        'hdr',      True),
+    (6,  '#475569', '#b91c1c', 'privacy',    'privacy',  True),
+    (7,  '#475569', '#475569', 'normal',     'normal',   False),
+    (8,  '#15803d', '#15803d', 'zoomin',     'zoom-in',  False),
+    (9,  '#166534', '#166534', 'zoomout',    'zoom-out', False),
+    (10, '#c2410c', '#c2410c', 'reset',      'reset',    False),
 ]
 
 ACTION_NAMES = {
     'track': 'AI Tracking',
     'deskview': 'DeskView',
-    'overhead': 'Overhead',
     'mirror': 'Mirror',
     'whiteboard': 'Whiteboard',
     'privacy': 'Privacy',
@@ -53,7 +51,7 @@ ACTION_NAMES = {
 
 
 def plugin_icon(stem: str, *, on: bool = True) -> str:
-    if stem in ('track', 'desk', 'overhead', 'mirror', 'board', 'privacy', 'hdr'):
+    if stem in ('track', 'desk', 'mirror', 'board', 'privacy', 'hdr'):
         state = 'on' if on else 'off'
         return f'plugins/{PLUGIN_DIR}/icons/{stem}-{state}.png'
     return f'plugins/{PLUGIN_DIR}/icons/{stem}.png'
@@ -61,7 +59,7 @@ def plugin_icon(stem: str, *, on: bool = True) -> str:
 
 def _state(label: str, bg: str, icon: str) -> dict:
     return {
-        'alignment': 'middle',
+        'alignment': 'bottom',
         'background_colour': bg,
         'colour': '#FFFFFF',
         'family': 'Liberation Sans',
@@ -80,7 +78,6 @@ def _state(label: str, bg: str, icon: str) -> dict:
 
 def _make_key(
     index: int,
-    label: str,
     bg_off: str,
     bg_on: str,
     suffix: str,
@@ -91,11 +88,19 @@ def _make_key(
     name = ACTION_NAMES.get(suffix, suffix)
     if is_toggle:
         states = [
-            _state(label, bg_off, plugin_icon(icon_stem, on=False)),
-            _state(label, bg_on, plugin_icon(icon_stem, on=True)),
+            _state('OFF', bg_off, plugin_icon(icon_stem, on=False)),
+            _state('ON', bg_on, plugin_icon(icon_stem, on=True)),
         ]
         action_icon = plugin_icon(icon_stem, on=True)
     else:
+        labels = {
+            'center': 'Center',
+            'reset': 'Reset',
+            'normal': 'Normal',
+            'zoom-in': 'Zoom+',
+            'zoom-out': 'Zoom−',
+        }
+        label = labels.get(icon_stem, name)
         state = _state(label, bg_on, plugin_icon(icon_stem))
         states = [dict(state)]
         action_icon = plugin_icon(icon_stem)
@@ -123,8 +128,8 @@ def _make_key(
 
 def build_profile() -> dict:
     keys = [
-        _make_key(idx, label, bg_off, bg_on, suffix, icon, toggle)
-        for idx, label, bg_off, bg_on, suffix, icon, toggle in BUTTONS
+        _make_key(idx, bg_off, bg_on, suffix, icon, toggle)
+        for idx, bg_off, bg_on, suffix, icon, toggle in BUTTONS
     ]
     return {'keys': keys, 'sliders': []}
 
